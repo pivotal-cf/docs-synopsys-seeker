@@ -1,17 +1,77 @@
 ---
-title: Using YOUR-PRODUCT-NAME
+title: Using the Synopsys Seeker IAST Service Broker for PCF
 owner: Partners
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use the Synopsys Seeker IAST Service Broker for PCF.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
+##<a id='using'></a> How the the Synopsys Seeker IAST Service Broker for PCF works
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. 
-Give procedures for how to perform the different functions offered by your product and provide screenshots where necessary.** 
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. 
-If you include a Troubleshooting section, follow the Symptom/Explanation format used in the 
-[Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+The Seeker Service Broker tile has the following buildpacks embedded in it:
+
+1. seeker\_node\_buildpack: used to monitor node applications, forked from: https://github.com/cloudfoundry/nodejs-buildpack
+1. seeker\_java\_buildpack: used to monitor java applications, forked from: https://github.com/cloudfoundry/java-buildpack
+
+Each buildpack is in charge of pulling the agent from the server and injecting 
+it into the application during the deployment.
+
+The buildpack then sets the following environment variables:
+
+* SEEKER\_SENSOR\_HOST
+* SEEKER\_SENSOR\_HTTP\_PORT
+
+These variables are used by the agent to communicate with the sensor.  
+
+**Java**:  
+In Java applications, the buildpack adds the javaagent jvm argument that points to the seeker-agent.jar
+
+**NodeJS**:  
+In NodeJS applications, the agent must be included from the source code. The first line of code should be:
+<p><code>
+require('@synopsys-sig/seeker-inline');
+</code></p>
+
+If adding this line to the code is problematic, use a special environment variable 
+that injects this line of code automatically:
+<p><code>
+cf set-env cf-nodejs SEEKER\_APP\_ENTRY\_POINT ./server.js
+</code></p>
+
+The **SEEKER\_APP\_ENTRY\_POINT** should point to the main module. It should be the full path to 
+the js file relative to the root folder of your app.
+
+##<a id='using'></a> Using the Synopsys Seeker IAST Service Broker for PCF
+
+The Synopsys Seeker IAST Service Broker for PCF requires that you are logged in to a PCF environment
+and have selected your organization and space.
+
+1. Verify that the **synopsys-seeeker** service displays in the Marketplace using the command: 
+<p><code>
+cf marketplace 
+</code></p>
+1. Create a service instance of the synopsys-seeeker using the command:
+ <p><code>
+cf create-service synopsys-seeeker standard INSTANCE-NAME
+ </code></p>
+1. Deploy your app using the custom Seeker buildpack without starting it:  
+**For NodeJS applications**:
+<p><code>
+cf push --no-start -b seeker\_node\_buildpack APP-NAME 
+</code></p>
+**For Java applications**:
+<p><code>
+cf push --no-start -b seeker\_java\_buildpack APP-NAME 
+</code></p>
+1. Bind the service instance of the Seeker service to the app using the command: 
+ <p><code>
+cf bind-service APP-NAME INSTANCE-NAME
+ </code></p>
+1. Start the app
+<p><code>
+cf start
+</code></p>
+1. Navigate to Seeker Enterprise to view the findings:
+<img src='images/seeker-vuln-list.png'></img>
