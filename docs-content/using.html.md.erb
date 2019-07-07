@@ -10,20 +10,19 @@ This topic describes how to use the Synopsys Seeker IAST Service Broker for Pivo
 ##<a id='using'></a> How the Synopsys Seeker IAST Service Broker for PCF Works
 
 
-The Synopsys Seeker IAST Service Broker tile has the following buildpacks embedded in it:
+The Synopsys Seeker IAST Service Broker tile relies on following buildpacks:
 
-1. seeker\_node\_buildpack: used to monitor node apps, forked from: https://github.com/cloudfoundry/nodejs-buildpack
-1. seeker\_java\_buildpack: used to monitor java apps, forked from: https://github.com/cloudfoundry/java-buildpack
+1. https://github.com/synopsys-sig/seeker-nodejs-buildpack - used to monitor node apps, forked from: https://github.com/cloudfoundry/nodejs-buildpack
+1. https://github.com/synopsys-sig/seeker-java-buildpack - used to monitor java apps, forked from: https://github.com/cloudfoundry/java-buildpack
 
 Each buildpack is in charge of pulling the agent from the server and injecting 
 it into the app during the deployment.
 
-The buildpack then sets the following environment variables:
+The buildpack then sets the following environment variable:
 
-* SEEKER\_SENSOR\_HOST
-* SEEKER\_SENSOR\_HTTP\_PORT
+* SEEKER_SERVER_URL
 
-These variables are used by the agent to communicate with the sensor.  
+This variable is used by the agent to communicate with the server.  
 
 **Java**:  
 In Java apps, the buildpack adds the javaagent jvm argument that points to the `seeker-agent.jar`.
@@ -59,11 +58,11 @@ cf create-service synopsys-seeker standard INSTANCE-NAME
 1. Deploy your app using the custom Seeker buildpack without starting it:  
 **For NodeJS apps**:
 <p><code>
-cf push --no-start -b seeker\_node\_buildpack APP-NAME 
+cf push --no-start -b https://github.com/synopsys-sig/seeker-nodejs-buildpack APP-NAME 
 </code></p>
 **For Java apps**:
 <p><code>
-cf push --no-start -b seeker\_java\_buildpack APP-NAME 
+cf push --no-start -b https://github.com/synopsys-sig/seeker-java-buildpack APP-NAME 
 </code></p>
 1. Bind the service instance of the Seeker service to the app using the command: 
  <p><code>
