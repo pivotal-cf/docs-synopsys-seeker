@@ -12,8 +12,8 @@ This topic describes how to use the Synopsys Seeker IAST Service Broker for Pivo
 
 The Synopsys Seeker IAST Service Broker tile relies on following buildpacks:
 
-1. https://github.com/synopsys-sig/seeker-nodejs-buildpack - used to monitor node apps, forked from: https://github.com/cloudfoundry/nodejs-buildpack
-1. https://github.com/synopsys-sig/seeker-java-buildpack - used to monitor java apps, forked from: https://github.com/cloudfoundry/java-buildpack
+1. https://github.com/cloudfoundry/nodejs-buildpack - used to monitor Node.js apps
+2. https://github.com/cloudfoundry/java-buildpack - used to monitor Java apps
 
 Each buildpack is in charge of pulling the agent from the server and injecting 
 it into the app during the deployment.
@@ -51,26 +51,22 @@ and have selected your organization and space.
 <p><code>
 cf marketplace 
 </code></p>
-1. Create a service instance of the synopsys-seeker using the command:
+2. Create a service instance of the synopsys-seeker using the command:
  <p><code>
 cf create-service synopsys-seeker standard INSTANCE-NAME
  </code></p>
-1. Deploy your app using the custom Seeker buildpack without starting it:  
-**For NodeJS apps**:
+3. Deploy your app without starting it:
+**For NodeJS/Java apps**:
 <p><code>
-cf push --no-start -b https://github.com/synopsys-sig/seeker-nodejs-buildpack APP-NAME 
+cf push --no-start APP-NAME
 </code></p>
-**For Java apps**:
+4. Bind the Seeker service instance to the app using the command:
 <p><code>
-cf push --no-start -b https://github.com/synopsys-sig/seeker-java-buildpack APP-NAME 
-</code></p>
-1. Bind the service instance of the Seeker service to the app using the command: 
- <p><code>
 cf bind-service APP-NAME INSTANCE-NAME
  </code></p>
-1. Start the app
+5. Start the app
 <p><code>
 cf start APP-NAME
 </code></p>
-1. Navigate to Seeker Enterprise to view the findings:
+6. Navigate to Seeker Enterprise to view the findings:
 <img src='images/seeker-vuln-list.png'></img>
