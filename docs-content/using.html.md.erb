@@ -27,8 +27,8 @@ This variable is used by the agent to communicate with the server.
 **Java**:  
 In Java apps, the buildpack adds the javaagent jvm argument that points to the `seeker-agent.jar`.
 
-**NodeJS**:  
-In NodeJS apps, the agent must be included from the source code. The first line of code should be:
+**Node.js**:  
+In Node.js apps, the agent must be included from the source code. The first line of code should be:
 <p><code>
 require('@synopsys-sig/seeker-inline');
 </code></p>
@@ -56,7 +56,7 @@ cf marketplace
 cf create-service synopsys-seeker standard INSTANCE-NAME
  </code></p>
 3. Deploy your app without starting it:
-**For NodeJS/Java apps**:
+**For Node.js/Java apps**:
 <p><code>
 cf push --no-start APP-NAME
 </code></p>
@@ -68,5 +68,5 @@ cf bind-service APP-NAME INSTANCE-NAME
 <p><code>
 cf start APP-NAME
 </code></p>
-6. Navigate to Seeker Enterprise to view the findings:
+6. To view the findings, navigate to the Seeker Enterprise server.
 <img src='images/seeker-vuln-list.png'></img>
