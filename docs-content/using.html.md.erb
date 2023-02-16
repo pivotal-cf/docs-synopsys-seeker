@@ -7,49 +7,47 @@ owner: Partners
 
 This topic describes how to use the Synopsys Seeker IAST Service Broker for VMware Tanzu.
 
-##<a id='using'></a> How the Synopsys Seeker IAST Service Broker for VMware Tanzu Works
-
+## <a id='using'></a> How the Synopsys Seeker IAST Service Broker for VMware Tanzu Works
 
 The Synopsys Seeker IAST Service Broker tile relies on following buildpacks:
 
-1. https://github.com/cloudfoundry/nodejs-buildpack - used to monitor Node.js apps
-2. https://github.com/cloudfoundry/java-buildpack - used to monitor Java apps
+1. <https://github.com/cloudfoundry/nodejs-buildpack> - used to monitor Node.js apps
+2. <https://github.com/cloudfoundry/java-buildpack> - used to monitor Java apps
 
-Each buildpack is in charge of pulling the agent from the server and injecting 
+Each buildpack is in charge of pulling the agent from the server and injecting
 it into the app during the deployment.
 
 The buildpack then sets the following environment variable:
 
 * SEEKER_SERVER_URL
 
-This variable is used by the agent to communicate with the server.  
+This variable is used by the agent to communicate with the server.
 
-**Java**:  
+**Java**:
 In Java apps, the buildpack adds the javaagent jvm argument that points to the `seeker-agent.jar`.
 
-**Node.js**:  
+**Node.js**:
 In Node.js apps, the agent must be included from the source code. The first line of code should be:
 <p><code>
 require('@synopsys-sig/seeker-inline');
 </code></p>
 
-If adding this line to the code is problematic, use a special environment variable 
+If adding this line to the code is problematic, use a special environment variable
 that injects this line of code automatically:
 <p><code>
 cf set-env cf-nodejs SEEKER\_APP\_ENTRY\_POINT ./server.js
 </code></p>
 
-The **SEEKER\_APP\_ENTRY\_POINT** should point to the main module. It should be the full path to 
+The **SEEKER\_APP\_ENTRY\_POINT** must point to the main module. It must be the full path to
 the JS file relative to the root folder of your app.
 
-##<a id='using'></a> Using the Synopsys Seeker IAST Service Broker for VMware Tanzu
+## <a id='using'></a> Using the Synopsys Seeker IAST Service Broker for VMware Tanzu
 
-The Synopsys Seeker IAST Service Broker for VMware Tanzu requires that you are logged in to a VMware Tanzu environment
-and have selected your organization and space.
+Synopsys Seeker IAST Service Broker for VMware Tanzu requires that you log in to a VMware Tanzu environment and have selected your organization and space.
 
-1. Verify that the **synopsys-seeker** service displays in the Marketplace using the command: 
+1..Verify **synopsys-seeker** service displays in the Marketplace using the command:
 <p><code>
-cf marketplace 
+cf marketplace
 </code></p>
 2. Create a service instance of the synopsys-seeker using the command:
  <p><code>
