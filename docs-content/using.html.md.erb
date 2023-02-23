@@ -48,25 +48,37 @@ the JS file relative to the root folder of your app.
 Synopsys Seeker IAST Service Broker for VMware Tanzu requires that you log in to a VMware Tanzu environment and have selected your organization and space.
 
 1..Verify **synopsys-seeker** service displays in the Marketplace using the command:
+
   ```
   cf marketplace
   ```
+
 2. Create a service instance of the synopsys-seeker using the command:
+
   ```
   cf create-service synopsys-seeker standard INSTANCE-NAME
   ```
+
 3. Deploy your app without starting it:
+
   **For Node.js/Java apps**:
+
   ```
   cf push --no-start APP-NAME
   ```
+
 4. Bind the Seeker service instance to the app using the command:
-```
-cf bind-service APP-NAME INSTANCE-NAME
-```
+
+  ```
+  cf bind-service APP-NAME INSTANCE-NAME
+  ```
+
 5. Start the app
+
   ```
   cf start APP-NAME
   ```
+
 6. To view the findings, navigate to the Seeker Enterprise server.
+
   ![Seeker Enterprise server](images/seeker-vuln-list.png)
