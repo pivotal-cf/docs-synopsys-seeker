@@ -19,7 +19,7 @@ it into the app during the deployment.
 
 The buildpack then sets the following environment variable:
 
-* SEEKER_SERVER_URL
+* `SEEKER_SERVER_URL`
 
 This variable is used by the agent to communicate with the server.
 
@@ -28,15 +28,17 @@ In Java apps, the buildpack adds the javaagent jvm argument that points to the `
 
 **Node.js**:
 In Node.js apps, the agent must be included from the source code. The first line of code should be:
-<p><code>
+
+```
 require('@synopsys-sig/seeker-inline');
-</code></p>
+```
 
 If adding this line to the code is problematic, use a special environment variable
 that injects this line of code automatically:
-<p><code>
+
+```
 cf set-env cf-nodejs SEEKER\_APP\_ENTRY\_POINT ./server.js
-</code></p>
+```
 
 The **SEEKER\_APP\_ENTRY\_POINT** must point to the main module. It must be the full path to
 the JS file relative to the root folder of your app.
@@ -46,25 +48,25 @@ the JS file relative to the root folder of your app.
 Synopsys Seeker IAST Service Broker for VMware Tanzu requires that you log in to a VMware Tanzu environment and have selected your organization and space.
 
 1..Verify **synopsys-seeker** service displays in the Marketplace using the command:
-<p><code>
-cf marketplace
-</code></p>
+  ```
+  cf marketplace
+  ```
 2. Create a service instance of the synopsys-seeker using the command:
- <p><code>
-cf create-service synopsys-seeker standard INSTANCE-NAME
- </code></p>
+  ```
+  cf create-service synopsys-seeker standard INSTANCE-NAME
+  ```
 3. Deploy your app without starting it:
-**For Node.js/Java apps**:
-<p><code>
-cf push --no-start APP-NAME
-</code></p>
+  **For Node.js/Java apps**:
+  ```
+  cf push --no-start APP-NAME
+  ```
 4. Bind the Seeker service instance to the app using the command:
-<p><code>
+```
 cf bind-service APP-NAME INSTANCE-NAME
- </code></p>
+```
 5. Start the app
-<p><code>
-cf start APP-NAME
-</code></p>
+  ```
+  cf start APP-NAME
+  ```
 6. To view the findings, navigate to the Seeker Enterprise server.
-<img src='images/seeker-vuln-list.png'></img>
+  ![Seeker Enterprise server](images/seeker-vuln-list.png)
